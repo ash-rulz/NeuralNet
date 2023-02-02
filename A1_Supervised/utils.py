@@ -170,11 +170,22 @@ def splitDataBins(X, D, L, nBins):
     return XBins, DBins, LBins
 
 def getWeightsBias(nInputs, nClasses):
-    lower,upper=-(1.0 / np.sqrt(nInputs)),(1.0 / np.sqrt(nInputs))
-    W0 = np.random.rand(nInputs * nClasses).reshape(nInputs,nClasses)
-    W0=lower+ W0*(upper-lower)
-    B0 = np.random.rand(nClasses).reshape(1,nClasses)
-    B0=lower+B0*(upper-lower)
+    """Gets the weights and biases using Xavier intialization
+    Args:
+        nInputs: Number of nodes in previous layer
+        nClasses: Number of nodes in next layer
+    Returns:
+        W0: Array of Weights
+        B0: Array of Biases
+    """
+    limit = np.sqrt(2 / float(nInputs + nClasses))
+    W0 = np.random.normal(0.0, limit, size=(nInputs, nClasses)).reshape(nInputs,nClasses)
+    B0 = np.random.normal(0.0, limit, size = nClasses).reshape(1,nClasses)
+#     lower,upper=-(1.0 / np.sqrt(nInputs)),(1.0 / np.sqrt(nInputs))
+#     W0 = np.random.rand(nInputs * nClasses).reshape(nInputs,nClasses)
+#     W0=lower+ W0*(upper-lower)
+#     B0 = np.random.rand(nClasses).reshape(1,nClasses)
+#     B0=lower+B0*(upper-lower)
     return W0, B0
 
 def getCVSplit(XBins,DBins,LBins,nBins,i):
